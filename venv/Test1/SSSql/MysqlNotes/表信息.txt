@@ -1,0 +1,33 @@
+describe 缩写为 desc 
+
+dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int(2)      | NO   | PRI | NULL    |       |		部门编号
+| DNAME  | varchar(14) | YES  |     | NULL    |       |		部门名字
+| LOC    | varchar(13) | YES  |     | NULL    |       |		地理位置
++--------+-------------+------+-----+---------+-------+
+
+emp:
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| EMPNO    | int(4)      | NO   | PRI | NULL    |       |	员工编号
+| ENAME    | varchar(10) | YES  |     | NULL    |       |	员工姓名
+| JOB      | varchar(9)  | YES  |     | NULL    |       |	工作岗位
+| MGR      | int(4)      | YES  |     | NULL    |       |	上级编号
+| HIREDATE | date        | YES  |     | NULL    |       |	入职日期
+| SAL      | double(7,2) | YES  |     | NULL    |       |	工资
+| COMM     | double(7,2) | YES  |     | NULL    |       |	补助
+| DEPTNO   | int(2)      | YES  |     | NULL    |       |	部门编号
++----------+-------------+------+-----+---------+-------+
+
+salgrade:
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| GRADE | int(11) | YES  |     | NULL    |       |	工资登记
+| LOSAL | int(11) | YES  |     | NULL    |       |	最低工资
+| HISAL | int(11) | YES  |     | NULL    |       |	最高工资
++-------+---------+------+-----+---------+-------+

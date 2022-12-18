@@ -1,0 +1,31 @@
+from子句中的子查询
+ 注意:from后面的子查询，可以将子查询的查询结果当做一张临时表。
+
+union
+select ename,job from emp where job = 'manager'
+    -> union
+    -> select ename,job from emp where job = 'salesman';
+将上述两个查询结果连接起来
+
+union的效率要高一些。对于表连接来说，每连接一次新表，则匹配的次数满足笛卡尔积，
+成倍的翻。。。
+但是union可以减少匹配的次数。在减少匹配次数的情况下，
+还可以完成两个结果集的拼接
+
+a连接b是： 10 * 10 -> 100次
+a连接c是: 10 * 10 -> 100次
+
+union的话: 100次 + 100 = 200 次 
+
+union在使用的时候有注意事项嘛？
+union在进行结果集合并的时候，要求两个结果集的列数相同 （数据类型也要一样 mysql可以 oracle不可以）
+
+limit的作用
+用法: limit startIndex,length
+startIndex是起始下标，length是长度
+将查询结果的一部分取出来，通常使用在分页查询当中。
+百度默认:一页显示10条记录
+分页的作用是为了提高用户的体验，因为一次全部都查出来，用户的体验特别查。
+可以一页一页翻页看
+
+mysql在order by 之后执行

@@ -1,0 +1,38 @@
+1. 查询员工名字和薪资，要求按照薪资升序，如果薪资一样的话，再按照名字升序来排列
+ select ename,sal from emp order by sal asc,ename asc;
+  根据字段的位置也可以排序
+  select ename,sal from emp order by 2;
+
+2数据处理函数又称为单行处理函数
+特点:一个输入对应一个输出
+和单行处理函数相对的是多行处理函数（多个输入，对应一个输出）
+lower 转化成小写
+select lower(ename) from emp ;
+upper 转化成大写
+substr(substr（被截取的字符串，起始下标，截取的长度）)起始下标从1开始,没有0
+ 找出员工名字第一个字母是A的员工信息?
+ 1. select ename from emp where ename like 'A%';
+ 2. select ename from emp where substr(ename,1,1) = 'A';
+
+ 首字母大写
+  select concat(substr(name,1,1),substr(name,2,length(name)-1)) as result from t
+ 
+length 取长度
+trim 去空格
+str_to_date 将字符串转换成日期
+date_fromat 格式化日期
+format 设置千分位
+
+round 四舍五入
+select round('1234567.422',0) as result from emp; //不保留小数
+select round('123.45'，-1) as result from emp; //小数点左边舍弃一位
+
+rand() 生成随机数
+
+ifnull 可以将null转换成一个具体值
+在所有数据库当中，只要有null，参与数学运算，都为null
+select ename,(sal + ifnull(comm,0) * 12 yearsal from emp;
+concat函数进行字符串的拼接
+case...when..when...then...else....end
+当员工的工作岗位是MANAGER的时候，工资上调10%，当工作岗位是saleman的时候，工资上调50%
+（注意不是修改数据库，只是将查询结果显示为工资上调）

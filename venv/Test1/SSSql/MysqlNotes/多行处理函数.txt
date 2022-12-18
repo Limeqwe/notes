@@ -1,0 +1,20 @@
+分组函数 多行处理函数
+
+	输入多行，最终输出一行
+	count 计数 
+	count(*) 统计表当中的总行数 (只要有一行数据count++)
+	count(字段)表示统计该字段下所有不为NULL的元素的总数.
+
+	sum	求和
+	avg 平均值
+	max 最大值
+	min 最小值
+分组函数自动忽略null，不需要提前对null进行处理
+
+分组函数不能够直接使用在where子句中找出
+
+所有的分组函数可以组合起来一起用
+
+from where group by select order by 执行顺序
+
+ 

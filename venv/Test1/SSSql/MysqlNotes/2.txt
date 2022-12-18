@@ -1,0 +1,119 @@
+去重 distinct 把查询结果取出重复记录。
+ 只能出现在所有字段的最前方
+ select distinct ename,job from emp; ename,job两个字段联合去重 
+ 
+
+连接查询 
+ 根据表的方式分类:
+ 	内连接:
+	  等值连接
+	  非等值连接
+	  自连接
+	外连接:
+
+	  左外连接(左连接)
+	  右外连接（右连接）
+	全连接:
+
+
+mysql> select
+    -> ename,dname
+    -> from emp,dept
+    ->
+    -> ;
++--------+------------+
+| ename  | dname      |
++--------+------------+
+| SMITH  | ACCOUNTING |
+| SMITH  | RESEARCH   |
+| SMITH  | SALES      |
+| SMITH  | OPERATIONS |
+| ALLEN  | ACCOUNTING |
+| ALLEN  | RESEARCH   |
+| ALLEN  | SALES      |
+| ALLEN  | OPERATIONS |
+| WARD   | ACCOUNTING |
+| WARD   | RESEARCH   |
+| WARD   | SALES      |
+| WARD   | OPERATIONS |
+| JONES  | ACCOUNTING |
+| JONES  | RESEARCH   |
+| JONES  | SALES      |
+| JONES  | OPERATIONS |
+| MARTIN | ACCOUNTING |
+| MARTIN | RESEARCH   |
+| MARTIN | SALES      |
+| MARTIN | OPERATIONS |
+| BLAKE  | ACCOUNTING |
+| BLAKE  | RESEARCH   |
+| BLAKE  | SALES      |
+| BLAKE  | OPERATIONS |
+| CLARK  | ACCOUNTING |
+| CLARK  | RESEARCH   |
+| CLARK  | SALES      |
+| CLARK  | OPERATIONS |
+| SCOTT  | ACCOUNTING |
+| SCOTT  | RESEARCH   |
+| SCOTT  | SALES      |
+| SCOTT  | OPERATIONS |
+| KING   | ACCOUNTING |
+| KING   | RESEARCH   |
+| KING   | SALES      |
+| KING   | OPERATIONS |
+| TURNER | ACCOUNTING |
+| TURNER | RESEARCH   |
+| TURNER | SALES      |
+| TURNER | OPERATIONS |
+| ADAMS  | ACCOUNTING |
+| ADAMS  | RESEARCH   |
+| ADAMS  | SALES      |
+| ADAMS  | OPERATIONS |
+| JAMES  | ACCOUNTING |
+| JAMES  | RESEARCH   |
+| JAMES  | SALES      |
+| JAMES  | OPERATIONS |
+| FORD   | ACCOUNTING |
+| FORD   | RESEARCH   |
+| FORD   | SALES      |
+| FORD   | OPERATIONS |
+| MILLER | ACCOUNTING |
+| MILLER | RESEARCH   |
+| MILLER | SALES      |
+| MILLER | OPERATIONS |
++--------+------------+
+出现了笛卡尔积现象 
+
+如果有筛选 匹配的次数不会减少 只不过进行了四选一，次数并没有减少。。
+
+内连接 完全能够匹配上这个条件的数据查询出来
+	没有主次关系
+mysql> select a.ename as '员工表',b.ename as '领导名'
+    -> from
+    -> emp a
+    -> join
+    -> emp b
+    -> on
+    -> a.mgr = b.empno;
++--------+--------+
+| 员工表 | 领导名 |
++--------+--------+
+| SMITH  | FORD   |
+| ALLEN  | BLAKE  |
+| WARD   | BLAKE  |
+| JONES  | KING   |
+| MARTIN | BLAKE  |
+| BLAKE  | KING   |
+| CLARK  | KING   |
+| SCOTT  | JONES  |
+| TURNER | BLAKE  |
+| ADAMS  | SCOTT  |
+| JAMES  | BLAKE  |
+| FORD   | JONES  |
+| MILLER | CLARK  |
++--------+--------+
+13 rows in set (0.01 sec)
+
+外连接 右外连接
+right代表:表示将join关键字右边的这张表看成主表，
+主要是为了将这张表的数据全部查询出来，捎带着关联查询
+在外连接当中，两张表连接，产生了主次关系
