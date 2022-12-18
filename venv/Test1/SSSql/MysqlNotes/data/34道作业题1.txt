@@ -1,0 +1,74 @@
+1、取得每个部门最高薪水的人员名称
+mysql> select e.empno,e.ename,t.* from emp e join (select deptno,max(sal) as maxsal from emp group by deptno) as t on e.sal = t.maxsal ;
+2、哪些人的薪水在部门的平均薪水之上
+mysql> select e.empno,e.ename from emp e join (select deptno,avg(sal) as avgsal from emp group by deptno) as t on e.deptno = t.deptno and e.sal > t.avgsal;
+3、取得部门中（所有人的）平均的薪水等级
+mysql> select e.deptno,avg(s.grade) from emp e join salgrade s on e.sal between s.losal and s.hisal group by e.deptno;
+4、不准用组函数（Max ），取得最高薪水
+mysql> select ename,sal from emp order by sal desc limit 1;
+5、取得平均薪水最高的部门的部门编号
+mysql> select deptno,avg(sal) as avgsal from emp group by deptno order by avgsal desc limit 1  ;
+6、取得平均薪水最高的部门的部门名称
+mysql> select d.deptno,d.dname from dept d join (select deptno,avg(sal) as avgsal from emp group by deptno order by avgsal desc limit 1) as t on d.deptno = t.deptno;
+7、求平均薪水的等级最低的部门的部门名称
+select d.deptno,d.dname from dept d join (select deptno,avg(sal) as avgsal from emp group by deptno order by avgsal asc limit 1) as t on d.deptno = t.deptno;
+8、取得比普通员工(员工代码没有在 mgr 字段上出现的) 的最高薪水还要高的领导人姓名
+mysql> select ename,sal from emp where sal > (select max(sal) from emp where empno not in(select distinct mgr from emp where mgr is not null));
+9、取得薪水最高的前五名员工
+select ename,sal from emp order by sal desc limit 5
+10、取得薪水最高的第六到第十名员工
+select ename,sal from emp order by sal desc limit 5,5;
+11、取得最后入职的 5 名员工
+select ename,hiredate from emp order by hiredate desc limit 5;
+日期也可以降序，升序。
+12、取得每个薪水等级有多少员工
+select s.grade,count(*) from emp e join salgrade s on e.sal between s.losal and s.hisal group by s.grade;
+13、面试题：
+有 3 个表 S(学生表)，C（课程表），SC（学生选课表）
+S（SNO，SNAME）代表（学号，姓名）
+C（CNO，CNAME，CTEACHER）代表（课号，课名，教师）
+SC（SNO，CNO，SCGRADE）代表（学号，课号，成绩）
+问题：
+1，找出没选过“黎明”老师的所有学生姓名。
+select s.sname from s join sc on s.sno = sc.sno join c on sc.cno = c.cno having c.cteacher is not in ('黎明')；
+2，列出 2 门以上（含2 门）不及格学生姓名及平均成绩。
+3，即学过 1 号课程又学过 2 号课所有学生的姓名。
+14、列出所有员工及领导的姓名
+select a.ename,b.ename from emp a left join emp b on a.mgr = b.empno;
+15、列出受雇日期早于其直接上级的所有员工的编号,姓名,部门名称
+select a.ename,a.hiredate as '员工日期',b.ename,b.hiredate as '直属领导日期',d.dname from emp a join emp b on a.mgr = b.empno join dept d on a.deptno = d.deptno where a.hiredate < b.hiredate;
+16、 列出部门名称和这些部门的员工信息, 同时列出那些没有员工的部门
+select d.dname,e.ename from emp e left join dept d on e.deptno = d.deptno;
+17、列出至少有 5 个员工的所有部门
+mysql> select deptno from emp group by deptno having count(*) >= 5;
+按照部门编号分组，计数，筛选出 >= 5
+18、列出薪金比"SMITH" 多的所有员工信息
+mysql> select emp.* from emp where sal>(select sal from emp where empno=7369);
+19、 列出所有"CLERK"( 办事员) 的姓名及其部门名称, 部门的人数
+select t1.*,t2.deptcount from (select e.ename,d.dname,d.deptno from emp e join dept d on e.deptno = d.deptno where e.job = 'CLERK') t1 join (select deptno,count(*) as deptcount from emp group by deptno) t2 on t1.deptno = t2.deptno ;
+20、列出最低薪金大于 1500 的各种工作及从事此工作的全部雇员人数
+select ename,job,count(*) from emp group by job having min(sal) > 1500;
+21、列出在部门"SALES"< 销售部> 工作的员工的姓名, 假定不知道销售部的部门编号.
+select ename from emp where deptno 
+= (select deptno from dept where dname = 'SALES');
+22、列出薪金高于公司平均薪金的所有员工, 所在部门, 上级领导, 雇员的工资等级.
+select 	e.ename '员工',d.dname,l.ename '领导',s.gradefrom emp e join dept d on
+e.deptno = d.deptno left join emp l on	e.mgr = l.empnojoin salgrade s on e.sal between s.losal and s.hisal where	e.sal > (select avg(sal) from emp);
+23、 列出与"SCOTT" 从事相同工作的所有员工及部门名称
+select e.ename,d.dname from emp e join dept d on e.deptno = d.deptno where job = (select job from emp where ename='SCOTT') and e.ename <> 'scott';
+24、列出薪金等于部门 30 中员工的薪金的其他员工的姓名和薪金.
+select ename,sal from emp where sal in (select distinct sal from emp where deptno = 30);
+25、列出薪金高于在部门 30 工作的所有员工的薪金的员工姓名和薪金. 部门名称
+select e.ename,e.sal,d.dname from emp e join dept d on e.deptno = d.deptno where e.sal >(select max(sal) from emp where deptno = 30);
+26、列出在每个部门工作的员工数量, 平均工资和平均服务期限
+没有员工的部门，部门人数是0
+
+27、 列出所有员工的姓名、部门名称和工资。
+28、列出所有部门的详细信息和人数
+29、列出各种工作的最低工资及从事此工作的雇员姓名
+30、列出各个部门的 MANAGER( 领导) 的最低薪金
+31、列出所有员工的 年工资, 按 年薪从低到高排序
+32、求出员工领导的薪水超过3000的员工名称与领导
+33、求出部门名称中, 带'S'字符的部门员工的工资合计、部门人数
+34、给任职日期超过 30 年的员工加薪 10%.
+
