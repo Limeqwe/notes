@@ -1,0 +1,50 @@
+drop table if exists t_name ;
+
+insert into t_student(no,name,sex,age,email) values(1,'zhangsan','m',12,'zhangsan@123.com'); 一一对应
+未指定相当于所有字段都写上
+insert into t_student values()
+
+create table t_student (
+no int,
+name varchar(32),
+sex char(1) default 'm',
+age int(3),
+email varchar(255)
+);
+
+default 设置默认值
+
+ select ename,format(sal,'$999,999.99')as sal from emp;
+
+
+str_to_date:将字符串varchar转换成date类型
+insert into t_user(id,name,birth) values(1,'zhangsan',str_to_date('01-10-1990','%m-%d-%Y'))
+或者
+insert into t_user(id,name,birth) values(1,'zhangsan','1990-01-10')
+此时就不需要进行格式转换 自动将varchar 转换成 date
+
+
+date_fromat:将date类型传唤成具有一定格式的varchar字符串类型
+select id,name,date_format(birth,'%m/%d/%Y') as birth from t_user;
+
+date是短日期 只包括年月日 %Y-%m-%d
+datetime是长日期 包括年月日时分秒 %Y-%m-%d %h:%i:%s
+now() 获取时间 是datetime类型
+
+update t_user set name = 'jack'.birth= '2000',where id = 1
+
+delete from t_name from where 没有条件整张表会全部删除;
+
+create table emp2 as select * from emp;   快速复制！！ 表复制出来 表中的数据也存在了
+
+insert into dept_bak select * from dept;
+
+truncate 删除表中的数据 表还在 drop 是删除表
+删除效率比较高，表被一次截断，物理删除
+不支持回滚
+快速
+
+delete
+数据被删除了，但是这个数据在硬盘上的真实存储空间不会被释放
+删除效率比较低
+支持回滚，可以回复数据

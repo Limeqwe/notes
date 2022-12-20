@@ -1,0 +1,70 @@
+constraint
+在创建表的时候，我们可以给表中的字段加上一些约束，来保证这个表中数据的完整性、有效性
+约束的作用就是为了保证： 表中的数据有效
+
+约束包括哪些
+
+非空约束not null 只有列级约束
+字段不能为NULL
+
+唯一性约束 umique 可以是表级约束
+约束的字段不可以重复但是可以都为NULL
+
+新需求 name 和 email两个字段联合起来具有唯一性!!!
+create table t_vip(
+id int,
+name varchar(255),
+email varchar(255),
+unique(name,email)
+);
+
+primary 如果一个字段同时被mot null 和unique约束 在mysql中自动变为主键字段
+
+
+creat table t_vip(
+id int,
+name varchar(255) not null
+);
+xxx.sql相当于sql的脚本文件
+
+主键约束: pk primary key
+主键约束：就是一种约束
+主键字段：该自动上添加了主键约束，这样的字段叫做:主键字段
+主键值：主键字段中的每一个值都叫做:主键值
+
+什么是主键？有什么用
+主键值是每一行记录的唯一标识
+
+主键除了: 单一主键和复合主键之外，还可以这样进行分类？
+自然主键: 主键值是一个自然数，和业务没有关系
+业务主键: 主键值和业务紧密关联，例如拿银行卡账号做主键值
+
+create table t_vip(
+id int primary key auto_increment,
+name varchar(255)
+);
+
+foreign key 外键约束
+
+外键约束:一种约束
+外键字段:该字段上添加了外键约束
+外键值:外键字段当中的每一个值
+
+create table t_class(
+    classno int primary key,
+    classname varchar(255)
+);
+create table t_student(
+    no int primary key auto_increment,
+    name varchar(255),
+    cno int,
+    foreign key(cno) references t_class(classno)
+);
+子表中的外键引用的父表中的某个字段，被引用的这个字段必须是主键吗？
+    不一定是主键，但至少具有unique约束
+业务背景:
+    请设计数据库表，来描述:"班级和学生"的信息?
+    第一种方案： 班级和学生存储在一张表中
+
+
+
